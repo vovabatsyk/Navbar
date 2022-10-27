@@ -9,7 +9,7 @@ class LoggerService {
             displayLoggerName: false,
             displayFilePath: 'hidden',
             dateTimeTimezone: 'Europe/Kiev',
-            dateTimePattern: 'day-month-year hour:minute:second.millisecond'
+            dateTimePattern: 'day-month-year hour:minute:second.millisecond',
         });
     }
     log(...args) {

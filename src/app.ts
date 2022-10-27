@@ -1,29 +1,40 @@
-import express, { Express } from "express"
+import express, { Express } from 'express'
 import { Server } from 'http'
-import { LoggerService } from "./logger/loger.service"
+import { ILogger } from './logger/logger.interface'
+import { injectable, inject } from 'inversify'
+import { TYPES } from './types'
+import { IExceptionFilter } from './errors/exception.filter.interface'
+import 'reflect-metadata'
+import { IUserController } from './user/user.controller.interface'
+import { UserController } from './user/users.controller'
+
+@injectable()
 export class App {
+	app: Express
+	server: Server | undefined
+	port: number
 
-    app: Express
-    server: Server | undefined
-    port: number
-    logger: LoggerService
+	constructor(
+		@inject(TYPES.ILoger) private logger: ILogger,
+		@inject(TYPES.IUserController) private userController: UserController,
+		@inject(TYPES.IExceptionFilter) private exceptionFilter: IExceptionFilter
+	) {
+		this.app = express()
+		this.port = 8000
+	}
 
-    constructor(logger: LoggerService) {
-        this.app = express()
-        this.port = 8000
-        this.logger = logger
-    }
+	useRoutes() {
+		this.app.use('/users', this.userController.router)
+	}
 
-    useRoutes() {
-        this.app.use('/users', () => {
-            console.log('users');
-        })
-    }
+	useExceptionFilters() {
+		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter))
+	}
 
-    public async init() {
-        this.useRoutes()
-        this.server = this.app.listen(this.port, () => {
-            this.logger.log(`Server started on Port: ${this.port}`);
-        })
-    }
+	public async init() {
+		this.useRoutes()
+		this.useExceptionFilters()
+		this.server = this.app.listen(this.port)
+		this.logger.log(`Server started on Port: ${this.port}`)
+	}
 }

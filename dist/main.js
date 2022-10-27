@@ -1,20 +1,24 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.appContainer = exports.app = exports.appBindings = void 0;
 const app_1 = require("./app");
-const loger_service_1 = require("./logger/loger.service");
+const exception_filter_1 = require("./errors/exception.filter");
+const logger_service_1 = require("./logger/logger.service");
+const users_controller_1 = require("./user/users.controller");
+const inversify_1 = require("inversify");
+const types_1 = require("./types");
+exports.appBindings = new inversify_1.ContainerModule((bind) => {
+    bind(types_1.TYPES.ILoger).to(logger_service_1.LoggerService);
+    bind(types_1.TYPES.IExceptionFilter).to(exception_filter_1.ExceptionFilter);
+    bind(types_1.TYPES.IUserController).to(users_controller_1.UserController);
+    bind(types_1.TYPES.Application).to(app_1.App);
+});
 function bootstrap() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const app = new app_1.App(new loger_service_1.LoggerService);
-        yield app.init();
-    });
+    const appContainer = new inversify_1.Container();
+    appContainer.load(exports.appBindings);
+    const app = appContainer.get(types_1.TYPES.Application);
+    app.init();
+    return { app, appContainer };
 }
-bootstrap();
+_a = bootstrap(), exports.app = _a.app, exports.appContainer = _a.appContainer;
