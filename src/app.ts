@@ -17,7 +17,7 @@ export class App {
 	port: number;
 
 	constructor(
-		@inject(TYPES.ILoger) private logger: ILogger,
+		@inject(TYPES.ILogger) private logger: ILogger,
 		@inject(TYPES.IUserController) private userController: UserController,
 		@inject(TYPES.IExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.IConfigService) private configService: IConfigService,
@@ -45,6 +45,6 @@ export class App {
 		this.useExceptionFilters();
 		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
-		this.logger.log(`Server started on Port: ${this.port}`);
+		this.logger.log(`Сервер запущений на ${this.port} порті.`);
 	}
 }

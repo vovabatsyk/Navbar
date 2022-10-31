@@ -21,10 +21,10 @@ interface IBootstrap {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<ILogger>(TYPES.ILoger).to(LoggerService).inSingletonScope();
+	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
 	bind<IExceptionFilter>(TYPES.IExceptionFilter).to(ExceptionFilter).inSingletonScope();
 	bind<IUserController>(TYPES.IUserController).to(UserController).inSingletonScope();
-	bind<IUserService>(TYPES.IUserServise).to(UserService).inSingletonScope();
+	bind<IUserService>(TYPES.IUserService).to(UserService).inSingletonScope();
 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
 	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 	bind<IUsersRepository>(TYPES.IUserRepository).to(UsersRepository).inSingletonScope();

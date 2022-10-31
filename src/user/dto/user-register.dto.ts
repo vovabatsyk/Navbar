@@ -1,12 +1,12 @@
 import { IsEmail, IsString } from 'class-validator';
 
 export class UserRegisterDto {
-	@IsEmail({}, { message: 'Wrong Email!' })
+	@IsEmail({}, { message: 'Не правильний Email.' })
 	email!: string;
 
-	@IsString({ message: 'Do not enter a Password' })
+	@IsString({ message: 'Не правильно введений тип пароля.' })
 	password!: string;
 
-	@IsString({ message: 'Do not enter a Name' })
+	@IsString({ message: 'Не правильно введений тип імені.' })
 	name!: string;
 }

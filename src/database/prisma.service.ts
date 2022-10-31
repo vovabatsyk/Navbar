@@ -1,5 +1,4 @@
-import { PrismaClient, UserModel } from '@prisma/client';
-import e from 'express';
+import { PrismaClient } from '@prisma/client';
 import { injectable, inject } from 'inversify';
 import { ILogger } from '../logger/logger.interface';
 import { TYPES } from '../types';
@@ -8,17 +7,17 @@ import { TYPES } from '../types';
 export class PrismaService {
 	client: PrismaClient;
 
-	constructor(@inject(TYPES.ILoger) private logger: ILogger) {
+	constructor(@inject(TYPES.ILogger) private logger: ILogger) {
 		this.client = new PrismaClient();
 	}
 
 	async connect(): Promise<void> {
 		try {
 			await this.client.$connect();
-			this.logger.log('[Prisma Service] Connect to database successfully.');
+			this.logger.log("[Prisma Service] Успішно з'єднано з базою даних");
 		} catch (error) {
 			if (error instanceof Error) {
-				this.logger.error('[Prisma Service] Error connect to database. ' + error.message);
+				this.logger.error("[Prisma Service] Помилка з'єднання з базою даних. " + error.message);
 			}
 		}
 	}
