@@ -9,6 +9,11 @@ import { IExceptionFilter } from './errors/exception.filter.interface';
 import { IUserController } from './user/users.controller.interface';
 import { IUserService } from './user/user.service.interface';
 import { UserService } from './user/user.service';
+import { IConfigService } from './config/config.service.interface';
+import { ConfigService } from './config/config.service';
+import { PrismaService } from './database/prisma.service';
+import { IUsersRepository } from './user/users.repository.interface';
+import { UsersRepository } from './user/users.repository';
 
 interface IBootstrap {
 	app: App;
@@ -16,11 +21,14 @@ interface IBootstrap {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<ILogger>(TYPES.ILoger).to(LoggerService);
-	bind<IExceptionFilter>(TYPES.IExceptionFilter).to(ExceptionFilter);
-	bind<IUserController>(TYPES.IUserController).to(UserController);
-	bind<IUserService>(TYPES.IUserServise).to(UserService);
-	bind<App>(TYPES.Application).to(App);
+	bind<ILogger>(TYPES.ILoger).to(LoggerService).inSingletonScope();
+	bind<IExceptionFilter>(TYPES.IExceptionFilter).to(ExceptionFilter).inSingletonScope();
+	bind<IUserController>(TYPES.IUserController).to(UserController).inSingletonScope();
+	bind<IUserService>(TYPES.IUserServise).to(UserService).inSingletonScope();
+	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
+	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
+	bind<IUsersRepository>(TYPES.IUserRepository).to(UsersRepository).inSingletonScope();
+	bind<App>(TYPES.Application).to(App).inSingletonScope();
 });
 
 function bootstrap(): IBootstrap {
