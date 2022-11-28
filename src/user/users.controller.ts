@@ -34,6 +34,12 @@ export class UserController extends BaseController implements IUserController {
 				func: this.login,
 				middlewares: [new ValidateMiddleware(UserLoginDto)],
 			},
+			{
+				path: '/info',
+				method: 'get',
+				func: this.info,
+				middlewares: [],
+			},
 		]);
 	}
 
@@ -64,6 +70,11 @@ export class UserController extends BaseController implements IUserController {
 		}
 		this.ok(res, { email: result.email, name: result.name, id: result.id });
 		next(this.loggerService.log(`[create-user]: Ім'я ${result.name}`));
+	}
+
+	async info({ user }: Request, res: Response, next: NextFunction): Promise<void> {
+		this.ok(res, { email: user });
+		//	ц!ƒј#÷і4	next(this.loggerService.log(`[create-user]: Ім'я ${result.name}`));
 	}
 
 	private signJWT(email: string, secret: string): Promise<string> {
